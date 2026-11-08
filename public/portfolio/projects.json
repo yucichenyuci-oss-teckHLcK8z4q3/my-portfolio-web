@@ -5,10 +5,12 @@
       "title": "設備監控系統",
       "summary": "整合設備即時監控、運行狀態查詢、異常告警及任務處理等功能的智慧化管理平台。",
       "technologies": [
-        "Vue 3",
         "C#",
-        "MSSQL",
-        "MQTT"
+        ".NET 10",
+        "Blazor WebAssembly",
+        "ASP.NET Core",
+        "EF Core",
+        "SQLite"
       ],
       "cover": null,
       "screenshots": [],
