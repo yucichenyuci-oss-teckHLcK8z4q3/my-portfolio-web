@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import ScreenshotCarousel from './components/ScreenshotCarousel.vue'
 
 const base = import.meta.env.BASE_URL
 const projects = ref([])
@@ -66,15 +67,12 @@ onBeforeUnmount(() => window.removeEventListener('hashchange', onHashChange))
         <li v-for="t in current.technologies" :key="t">{{ t }}</li>
       </ul>
 
-      <section v-if="current.screenshots.length" class="gallery">
-        <img
-          v-for="s in current.screenshots"
-          :key="s"
-          :src="asset(s)"
-          :alt="current.title + ' 畫面'"
-          loading="lazy"
-        />
-      </section>
+      <ScreenshotCarousel
+        v-if="current.screenshots.length"
+        :key="current.slug"
+        :images="current.screenshots.map(asset)"
+        :alt="current.title"
+      />
 
       <div class="readme" v-html="readme"></div>
     </article>
