@@ -1,6 +1,10 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import ScreenshotCarousel from './components/ScreenshotCarousel.vue'
+import Watermark from './components/Watermark.vue'
+
+// 浮水印：標示用途與瀏覽日期，截圖外流時可以辨識來源
+const watermarkText = `僅供面試參閱 · ${new Date().toLocaleDateString('zh-TW')}`
 
 const base = import.meta.env.BASE_URL
 const projects = ref([])
@@ -72,16 +76,23 @@ onBeforeUnmount(() => window.removeEventListener('hashchange', onHashChange))
         :key="current.slug"
         :images="current.screenshots.map(asset)"
         :alt="current.title"
+        :watermark="watermarkText"
       />
 
-      <div class="readme" v-html="readme"></div>
+      <div class="readme">
+        <div v-html="readme"></div>
+        <Watermark :text="watermarkText" :opacity="0.12" />
+      </div>
     </article>
 
     <template v-else>
       <p v-if="!projects.length" class="status">目前沒有公開的作品。</p>
       <section class="grid">
         <a v-for="p in projects" :key="p.slug" :href="`#/p/${p.slug}`" class="card">
-          <img v-if="p.cover" :src="asset(p.cover)" :alt="p.title + ' 預覽'" loading="lazy" />
+          <div v-if="p.cover" class="card-cover">
+            <img :src="asset(p.cover)" :alt="p.title + ' 預覽'" loading="lazy" />
+            <Watermark :text="watermarkText" />
+          </div>
           <div class="card-body">
             <h2>{{ p.title }}</h2>
             <p>{{ p.summary }}</p>

@@ -1,9 +1,11 @@
 <script setup>
 import { ref } from 'vue'
+import Watermark from './Watermark.vue'
 
 const props = defineProps({
   images: { type: Array, required: true },
   alt: { type: String, default: '' },
+  watermark: { type: String, default: '' },
 })
 
 const track = ref(null)
@@ -50,6 +52,8 @@ function onKeydown(e) {
         :loading="i === 0 ? 'eager' : 'lazy'"
       />
     </div>
+
+    <Watermark v-if="watermark" :text="watermark" />
 
     <template v-if="images.length > 1">
       <button type="button" class="carousel-arrow prev" aria-label="上一張" @click="go(index - 1)">‹</button>

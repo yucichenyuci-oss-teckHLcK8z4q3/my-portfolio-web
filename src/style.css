@@ -27,6 +27,9 @@
 * { box-sizing: border-box; }
 
 body {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none; /* iOS 長按存圖 */
   margin: 0;
   background: var(--bg);
   color: var(--text);
@@ -35,6 +38,29 @@ body {
 }
 
 a { color: var(--accent); }
+
+img { -webkit-user-drag: none; }
+
+/* 浮水印覆蓋層：不攔截點擊與滑動 */
+.watermark {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-repeat: repeat;
+  z-index: 1;
+}
+
+/* 列印 / 另存 PDF 時隱藏所有內容（瀏覽器選單列印也有效） */
+@media print {
+  body > * { display: none !important; }
+  body::before {
+    content: "此作品集不提供列印或另存 PDF。";
+    display: block;
+    padding: 48px;
+    font-size: 18px;
+    color: #000;
+  }
+}
 
 .page { max-width: 1100px; margin: 0 auto; padding: 32px 16px 64px; }
 
@@ -61,7 +87,8 @@ a { color: var(--accent); }
   transition: transform 0.15s, box-shadow 0.15s;
 }
 .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgb(0 0 0 / 0.08); }
-.card img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: var(--code-bg); }
+.card-cover { position: relative; }
+.card-cover img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: var(--code-bg); }
 .card-body { padding: 16px 20px 20px; }
 .card-body h2 { margin: 0 0 6px; font-size: 1.15rem; }
 .card-body p { margin: 0 0 12px; color: var(--muted); font-size: 0.95rem; }
@@ -97,6 +124,9 @@ a { color: var(--accent); }
   object-fit: contain;
   scroll-snap-align: start;
 }
+.carousel-arrow,
+.carousel-count,
+.carousel-dots { z-index: 2; }
 .carousel-arrow {
   position: absolute;
   top: 50%;
@@ -146,6 +176,7 @@ a { color: var(--accent); }
 .carousel-dots button.active { background: #fff; transform: scale(1.25); }
 
 .readme {
+  position: relative;
   margin-top: 24px;
   padding-top: 8px;
   border-top: 1px solid var(--border);
